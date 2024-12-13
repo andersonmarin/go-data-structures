@@ -1,9 +1,9 @@
 package go_data_structures
 
 type linkedListNode[T any] struct {
-	value    T
-	next     *linkedListNode[T]
-	previous *linkedListNode[T]
+	data T
+	next *linkedListNode[T]
+	prev *linkedListNode[T]
 }
 
 type LinkedList[T any] struct {
@@ -20,30 +20,30 @@ func NewLinkedList[T any](items ...T) *LinkedList[T] {
 }
 
 func (l *LinkedList[T]) Front() T {
-	return l.head.value
+	return l.head.data
 }
 
 func (l *LinkedList[T]) Back() T {
-	return l.tail.value
+	return l.tail.data
 }
 
 func (l *LinkedList[T]) PushFront(item T) {
 	node := &linkedListNode[T]{
-		value: item,
-		next:  l.head,
+		data: item,
+		next: l.head,
 	}
 	if l.head == nil {
 		l.tail = node
 	} else {
-		l.head.previous = node
+		l.head.prev = node
 	}
 	l.head = node
 }
 
 func (l *LinkedList[T]) PushBack(item T) {
 	node := &linkedListNode[T]{
-		value:    item,
-		previous: l.tail,
+		data: item,
+		prev: l.tail,
 	}
 	if l.tail == nil {
 		l.head = node
@@ -56,11 +56,11 @@ func (l *LinkedList[T]) PushBack(item T) {
 func (l *LinkedList[T]) PopFront() T {
 	node := l.head
 	l.head = node.next
-	return node.value
+	return node.data
 }
 
 func (l *LinkedList[T]) PopBack() T {
 	node := l.tail
-	l.tail = node.previous
-	return node.value
+	l.tail = node.prev
+	return node.data
 }
