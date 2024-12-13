@@ -32,10 +32,10 @@ func (l *LinkedList[T]) PushFront(item T) {
 		value: item,
 		next:  l.head,
 	}
-	if l.head != nil {
-		l.head.previous = node
-	} else {
+	if l.head == nil {
 		l.tail = node
+	} else {
+		l.head.previous = node
 	}
 	l.head = node
 }
@@ -45,10 +45,10 @@ func (l *LinkedList[T]) PushBack(item T) {
 		value:    item,
 		previous: l.tail,
 	}
-	if l.tail != nil {
-		l.tail.next = node
-	} else {
+	if l.tail == nil {
 		l.head = node
+	} else {
+		l.tail.next = node
 	}
 	l.tail = node
 }
