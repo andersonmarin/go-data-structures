@@ -11,10 +11,10 @@ type LinkedList[T any] struct {
 	tail *linkedListNode[T]
 }
 
-func NewLinkedList[T any](items ...T) *LinkedList[T] {
+func NewLinkedList[T any](datas ...T) *LinkedList[T] {
 	l := new(LinkedList[T])
-	for _, item := range items {
-		l.PushBack(item)
+	for _, data := range datas {
+		l.PushBack(data)
 	}
 	return l
 }
@@ -45,9 +45,9 @@ func (l *LinkedList[T]) At(index int) (T, bool) {
 	return *new(T), false
 }
 
-func (l *LinkedList[T]) PushFront(item T) {
+func (l *LinkedList[T]) PushFront(data T) {
 	node := &linkedListNode[T]{
-		data: item,
+		data: data,
 		next: l.head,
 	}
 	if l.head == nil {
@@ -58,9 +58,9 @@ func (l *LinkedList[T]) PushFront(item T) {
 	l.head = node
 }
 
-func (l *LinkedList[T]) PushBack(item T) {
+func (l *LinkedList[T]) PushBack(data T) {
 	node := &linkedListNode[T]{
-		data: item,
+		data: data,
 		prev: l.tail,
 	}
 	if l.tail == nil {
