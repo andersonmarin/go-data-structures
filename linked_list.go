@@ -19,12 +19,30 @@ func NewLinkedList[T any](items ...T) *LinkedList[T] {
 	return l
 }
 
-func (l *LinkedList[T]) Front() T {
-	return l.head.data
+func (l *LinkedList[T]) Front() (T, bool) {
+	if l.head == nil {
+		return *new(T), false
+	}
+	return l.head.data, true
 }
 
-func (l *LinkedList[T]) Back() T {
-	return l.tail.data
+func (l *LinkedList[T]) Back() (T, bool) {
+	if l.tail == nil {
+		return *new(T), false
+	}
+	return l.tail.data, true
+}
+
+func (l *LinkedList[T]) At(index int) (T, bool) {
+	cursor := l.head
+	for cursor != nil {
+		if index == 0 {
+			return cursor.data, true
+		}
+		cursor = cursor.next
+		index--
+	}
+	return *new(T), false
 }
 
 func (l *LinkedList[T]) PushFront(item T) {
