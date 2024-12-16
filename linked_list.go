@@ -71,14 +71,20 @@ func (l *LinkedList[T]) PushBack(data T) {
 	l.tail = node
 }
 
-func (l *LinkedList[T]) PopFront() T {
+func (l *LinkedList[T]) PopFront() (T, bool) {
 	node := l.head
+	if node == nil {
+		return *new(T), false
+	}
 	l.head = node.next
-	return node.data
+	return node.data, true
 }
 
-func (l *LinkedList[T]) PopBack() T {
+func (l *LinkedList[T]) PopBack() (T, bool) {
 	node := l.tail
+	if node == nil {
+		return *new(T), false
+	}
 	l.tail = node.prev
-	return node.data
+	return node.data, true
 }

@@ -6,6 +6,31 @@ import (
 	"testing"
 )
 
+func TestNewLinkedList(t *testing.T) {
+	{
+		dl := NewLinkedList(4, 2)
+
+		v, ok := dl.Front()
+		require.True(t, ok)
+		require.Equal(t, v, 4)
+
+		v, ok = dl.Back()
+		require.True(t, ok)
+		require.Equal(t, v, 2)
+	}
+	{
+		dl := NewLinkedList(3, .14)
+
+		v, ok := dl.Front()
+		require.True(t, ok)
+		require.Equal(t, v, 3.0)
+
+		v, ok = dl.Back()
+		require.True(t, ok)
+		require.Equal(t, v, 0.14)
+	}
+}
+
 func TestLinkedList_Front(t *testing.T) {
 	dl := NewLinkedList[int]()
 
@@ -30,6 +55,24 @@ func TestLinkedList_Back(t *testing.T) {
 	v, ok = dl.Back()
 	require.True(t, ok)
 	require.Equal(t, v, 42)
+}
+
+func TestLinkedList_At(t *testing.T) {
+	dl := NewLinkedList[int]()
+	dl.PushBack(4)
+	dl.PushBack(2)
+
+	v, ok := dl.At(0)
+	require.True(t, ok)
+	require.Equal(t, v, 4)
+
+	v, ok = dl.At(1)
+	require.True(t, ok)
+	require.Equal(t, v, 2)
+
+	v, ok = dl.At(2)
+	require.False(t, ok)
+	require.Empty(t, v)
 }
 
 func TestLinkedList_PushFront(t *testing.T) {
@@ -74,4 +117,26 @@ func TestLinkedList_PushBack(t *testing.T) {
 	b, _ = dl.Back()
 	require.Equal(t, 2, f)
 	require.Equal(t, 8, b)
+}
+
+func TestLinkedList_PopFront(t *testing.T) {
+	dl := NewLinkedList[int]()
+
+	dl.PushFront(42)
+	f, _ := dl.PopFront()
+	require.Equal(t, f, 42)
+
+	f, _ = dl.PopFront()
+	require.Empty(t, f)
+}
+
+func TestLinkedList_PopBack(t *testing.T) {
+	dl := NewLinkedList[int]()
+
+	dl.PushBack(42)
+	f, _ := dl.PopBack()
+	require.Equal(t, f, 42)
+
+	f, _ = dl.PopBack()
+	require.Empty(t, f)
 }
