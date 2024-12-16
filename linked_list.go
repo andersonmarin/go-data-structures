@@ -1,6 +1,9 @@
 package go_data_structures
 
-import "fmt"
+import (
+	"fmt"
+	"iter"
+)
 
 type linkedListNode[T any] struct {
 	data T
@@ -132,24 +135,48 @@ func (l *LinkedList[T]) PopAt(index int) (T, bool) {
 }
 
 func (l *LinkedList[T]) Debug() {
-	cursor := l.head
-	for cursor != nil {
-		fmt.Print(cursor.data)
-		cursor = cursor.next
-		if cursor != nil {
+	for i, data := range l.Forward() {
+		if i > 0 {
 			fmt.Print(" → ")
 		}
+		fmt.Print(data)
 	}
 	fmt.Println()
-	cursor = l.tail
-	for cursor != nil {
-		fmt.Print(cursor.data)
-		cursor = cursor.prev
-		if cursor != nil {
+	for i, data := range l.Backward() {
+		if i > 0 {
 			fmt.Print(" ← ")
 		}
+		fmt.Print(data)
 	}
 	fmt.Println()
+}
+
+func (l *LinkedList[T]) Forward() iter.Seq2[int, T] {
+	return func(yield func(int, T) bool) {
+		cursor := l.head
+		var index int
+		for cursor != nil {
+			if cursor == nil || !yield(index, cursor.data) {
+				return
+			}
+			cursor = cursor.next
+			index++
+		}
+	}
+}
+
+func (l *LinkedList[T]) Backward() iter.Seq2[int, T] {
+	return func(yield func(int, T) bool) {
+		cursor := l.tail
+		var index int
+		for cursor != nil {
+			if cursor == nil || !yield(index, cursor.data) {
+				return
+			}
+			cursor = cursor.prev
+			index++
+		}
+	}
 }
 
 func (l *LinkedList[T]) at(index int) *linkedListNode[T] {
