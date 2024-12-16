@@ -9,6 +9,7 @@ import (
 func TestNewLinkedList(t *testing.T) {
 	{
 		dl := NewLinkedList(4, 2)
+		dl.Debug()
 
 		v, ok := dl.Front()
 		require.True(t, ok)
@@ -122,46 +123,32 @@ func TestLinkedList_PushBack(t *testing.T) {
 func TestLinkedList_PushAt(t *testing.T) {
 	dl := NewLinkedList(1, 2, 4, 5)
 
-	v, ok := dl.At(0)
-	require.True(t, ok)
-	require.Equal(t, v, 1)
-
-	v, ok = dl.At(1)
-	require.True(t, ok)
-	require.Equal(t, v, 2)
-
-	v, ok = dl.At(2)
+	v, ok := dl.At(2)
 	require.True(t, ok)
 	require.Equal(t, v, 4)
 
-	v, ok = dl.At(3)
-	require.True(t, ok)
-	require.Equal(t, v, 5)
-
 	ok = dl.PushAt(2, 3)
 	require.True(t, ok)
-
-	v, ok = dl.At(0)
-	require.True(t, ok)
-	require.Equal(t, v, 1)
-
-	v, ok = dl.At(1)
-	require.True(t, ok)
-	require.Equal(t, v, 2)
 
 	v, ok = dl.At(2)
 	require.True(t, ok)
 	require.Equal(t, v, 3)
 
-	v, ok = dl.At(3)
+	ok = dl.PushAt(0, 0)
 	require.True(t, ok)
-	require.Equal(t, v, 4)
 
-	v, ok = dl.At(4)
+	v, ok = dl.At(0)
 	require.True(t, ok)
-	require.Equal(t, v, 5)
+	require.Equal(t, 0, v)
 
 	ok = dl.PushAt(5, 6)
+	require.True(t, ok)
+
+	v, ok = dl.At(5)
+	require.True(t, ok)
+	require.Equal(t, 6, v)
+
+	ok = dl.PushAt(7, 7)
 	require.False(t, ok)
 }
 
@@ -198,11 +185,15 @@ func TestLinkedList_PopAt(t *testing.T) {
 	require.True(t, ok)
 	require.Equal(t, v, 1)
 
-	v, ok = dl.PopAt(3)
+	v, ok = dl.At(0)
+	require.True(t, ok)
+	require.Equal(t, v, 2)
+
+	v, ok = dl.PopAt(2)
 	require.True(t, ok)
 	require.Equal(t, v, 5)
 
-	v, ok = dl.PopAt(3)
+	v, ok = dl.PopAt(2)
 	require.False(t, ok)
 	require.Empty(t, v)
 }

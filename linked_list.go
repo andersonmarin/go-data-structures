@@ -1,5 +1,7 @@
 package go_data_structures
 
+import "fmt"
+
 type linkedListNode[T any] struct {
 	data T
 	next *linkedListNode[T]
@@ -80,8 +82,11 @@ func (l *LinkedList[T]) PushAt(index int, data T) bool {
 				prev: cursor.prev,
 				next: cursor,
 			}
-			cursor.next.prev = node
-			cursor.prev.next = node
+			if cursor.prev == nil {
+				l.head = node
+			} else {
+				cursor.prev.next = node
+			}
 			return true
 		}
 		cursor = cursor.next
@@ -112,10 +117,14 @@ func (l *LinkedList[T]) PopAt(index int) (T, bool) {
 	cursor := l.head
 	for cursor != nil {
 		if index == 0 {
-			if cursor.next != nil {
+			if cursor.next == nil {
+				l.tail = cursor.prev
+			} else {
 				cursor.next.prev = cursor.prev
 			}
-			if cursor.prev != nil {
+			if cursor.prev == nil {
+				l.head = cursor.next
+			} else {
 				cursor.prev.next = cursor.next
 			}
 			return cursor.data, true
@@ -124,4 +133,16 @@ func (l *LinkedList[T]) PopAt(index int) (T, bool) {
 		index--
 	}
 	return *new(T), false
+}
+
+func (l *LinkedList[T]) Debug() {
+	cursor := l.head
+	for cursor != nil {
+		fmt.Print(cursor.data)
+		cursor = cursor.next
+		if cursor != nil {
+			fmt.Print(" → ")
+		}
+	}
+	fmt.Println()
 }
