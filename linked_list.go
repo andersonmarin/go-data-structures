@@ -71,6 +71,25 @@ func (l *LinkedList[T]) PushBack(data T) {
 	l.tail = node
 }
 
+func (l *LinkedList[T]) PushAt(index int, data T) bool {
+	cursor := l.head
+	for cursor != nil {
+		if index == 0 {
+			node := &linkedListNode[T]{
+				data: data,
+				prev: cursor.prev,
+				next: cursor,
+			}
+			cursor.next.prev = node
+			cursor.prev.next = node
+			return true
+		}
+		cursor = cursor.next
+		index--
+	}
+	return false
+}
+
 func (l *LinkedList[T]) PopFront() (T, bool) {
 	node := l.head
 	if node == nil {

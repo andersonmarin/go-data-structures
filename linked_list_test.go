@@ -119,6 +119,52 @@ func TestLinkedList_PushBack(t *testing.T) {
 	require.Equal(t, 8, b)
 }
 
+func TestLinkedList_PushAt(t *testing.T) {
+	dl := NewLinkedList(1, 2, 4, 5)
+
+	v, ok := dl.At(0)
+	require.True(t, ok)
+	require.Equal(t, v, 1)
+
+	v, ok = dl.At(1)
+	require.True(t, ok)
+	require.Equal(t, v, 2)
+
+	v, ok = dl.At(2)
+	require.True(t, ok)
+	require.Equal(t, v, 4)
+
+	v, ok = dl.At(3)
+	require.True(t, ok)
+	require.Equal(t, v, 5)
+
+	ok = dl.PushAt(2, 3)
+	require.True(t, ok)
+
+	v, ok = dl.At(0)
+	require.True(t, ok)
+	require.Equal(t, v, 1)
+
+	v, ok = dl.At(1)
+	require.True(t, ok)
+	require.Equal(t, v, 2)
+
+	v, ok = dl.At(2)
+	require.True(t, ok)
+	require.Equal(t, v, 3)
+
+	v, ok = dl.At(3)
+	require.True(t, ok)
+	require.Equal(t, v, 4)
+
+	v, ok = dl.At(4)
+	require.True(t, ok)
+	require.Equal(t, v, 5)
+
+	ok = dl.PushAt(5, 6)
+	require.False(t, ok)
+}
+
 func TestLinkedList_PopFront(t *testing.T) {
 	dl := NewLinkedList[int]()
 
