@@ -36,15 +36,11 @@ func (l *LinkedList[T]) Back() (T, bool) {
 }
 
 func (l *LinkedList[T]) At(index int) (T, bool) {
-	cursor := l.head
-	for cursor != nil {
-		if index == 0 {
-			return cursor.data, true
-		}
-		cursor = cursor.next
-		index--
+	cursor := l.at(index)
+	if cursor == nil {
+		return *new(T), false
 	}
-	return *new(T), false
+	return cursor.data, true
 }
 
 func (l *LinkedList[T]) PushFront(data T) {
@@ -74,25 +70,21 @@ func (l *LinkedList[T]) PushBack(data T) {
 }
 
 func (l *LinkedList[T]) PushAt(index int, data T) bool {
-	cursor := l.head
-	for cursor != nil {
-		if index == 0 {
-			node := &linkedListNode[T]{
-				data: data,
-				prev: cursor.prev,
-				next: cursor,
-			}
-			if cursor.prev == nil {
-				l.head = node
-			} else {
-				cursor.prev.next = node
-			}
-			return true
-		}
-		cursor = cursor.next
-		index--
+	cursor := l.at(index)
+	if cursor == nil {
+		return false
 	}
-	return false
+	node := &linkedListNode[T]{
+		data: data,
+		prev: cursor.prev,
+		next: cursor,
+	}
+	if cursor.prev == nil {
+		l.head = node
+	} else {
+		cursor.prev.next = node
+	}
+	return true
 }
 
 func (l *LinkedList[T]) PopFront() (T, bool) {
@@ -114,25 +106,21 @@ func (l *LinkedList[T]) PopBack() (T, bool) {
 }
 
 func (l *LinkedList[T]) PopAt(index int) (T, bool) {
-	cursor := l.head
-	for cursor != nil {
-		if index == 0 {
-			if cursor.next == nil {
-				l.tail = cursor.prev
-			} else {
-				cursor.next.prev = cursor.prev
-			}
-			if cursor.prev == nil {
-				l.head = cursor.next
-			} else {
-				cursor.prev.next = cursor.next
-			}
-			return cursor.data, true
-		}
-		cursor = cursor.next
-		index--
+	cursor := l.at(index)
+	if cursor == nil {
+		return *new(T), false
 	}
-	return *new(T), false
+	if cursor.next == nil {
+		l.tail = cursor.prev
+	} else {
+		cursor.next.prev = cursor.prev
+	}
+	if cursor.prev == nil {
+		l.head = cursor.next
+	} else {
+		cursor.prev.next = cursor.next
+	}
+	return cursor.data, true
 }
 
 func (l *LinkedList[T]) Debug() {
@@ -145,4 +133,16 @@ func (l *LinkedList[T]) Debug() {
 		}
 	}
 	fmt.Println()
+}
+
+func (l *LinkedList[T]) at(index int) *linkedListNode[T] {
+	cursor := l.head
+	for cursor != nil {
+		if index == 0 {
+			return cursor
+		}
+		cursor = cursor.next
+		index--
+	}
+	return nil
 }
