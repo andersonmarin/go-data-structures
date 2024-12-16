@@ -186,3 +186,23 @@ func TestLinkedList_PopBack(t *testing.T) {
 	f, _ = dl.PopBack()
 	require.Empty(t, f)
 }
+
+func TestLinkedList_PopAt(t *testing.T) {
+	dl := NewLinkedList(1, 2, 3, 4, 5)
+
+	v, ok := dl.PopAt(2)
+	require.True(t, ok)
+	require.Equal(t, v, 3)
+
+	v, ok = dl.PopAt(0)
+	require.True(t, ok)
+	require.Equal(t, v, 1)
+
+	v, ok = dl.PopAt(3)
+	require.True(t, ok)
+	require.Equal(t, v, 5)
+
+	v, ok = dl.PopAt(3)
+	require.False(t, ok)
+	require.Empty(t, v)
+}

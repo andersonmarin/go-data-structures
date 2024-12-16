@@ -107,3 +107,21 @@ func (l *LinkedList[T]) PopBack() (T, bool) {
 	l.tail = node.prev
 	return node.data, true
 }
+
+func (l *LinkedList[T]) PopAt(index int) (T, bool) {
+	cursor := l.head
+	for cursor != nil {
+		if index == 0 {
+			if cursor.next != nil {
+				cursor.next.prev = cursor.prev
+			}
+			if cursor.prev != nil {
+				cursor.prev.next = cursor.next
+			}
+			return cursor.data, true
+		}
+		cursor = cursor.next
+		index--
+	}
+	return *new(T), false
+}
