@@ -8,16 +8,20 @@ import (
 
 func TestNewLinkedList(t *testing.T) {
 	{
-		dl := NewLinkedList(4, 2)
+		dl := NewLinkedList(1, 2, 3, 4, 5, 6)
 		dl.Debug()
 
 		v, ok := dl.Front()
 		require.True(t, ok)
-		require.Equal(t, v, 4)
+		require.Equal(t, v, 1)
+
+		v, ok = dl.At(1)
+		require.True(t, ok)
+		require.Equal(t, v, 2)
 
 		v, ok = dl.Back()
 		require.True(t, ok)
-		require.Equal(t, v, 2)
+		require.Equal(t, v, 6)
 	}
 	{
 		dl := NewLinkedList(3, .14)

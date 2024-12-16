@@ -11,6 +11,7 @@ type linkedListNode[T any] struct {
 type LinkedList[T any] struct {
 	head *linkedListNode[T]
 	tail *linkedListNode[T]
+	size int
 }
 
 func NewLinkedList[T any](datas ...T) *LinkedList[T] {
@@ -54,6 +55,7 @@ func (l *LinkedList[T]) PushFront(data T) {
 		l.head.prev = node
 	}
 	l.head = node
+	l.size++
 }
 
 func (l *LinkedList[T]) PushBack(data T) {
@@ -67,6 +69,7 @@ func (l *LinkedList[T]) PushBack(data T) {
 		l.tail.next = node
 	}
 	l.tail = node
+	l.size++
 }
 
 func (l *LinkedList[T]) PushAt(index int, data T) bool {
@@ -76,14 +79,16 @@ func (l *LinkedList[T]) PushAt(index int, data T) bool {
 	}
 	node := &linkedListNode[T]{
 		data: data,
-		prev: cursor.prev,
 		next: cursor,
+		prev: cursor.prev,
 	}
 	if cursor.prev == nil {
 		l.head = node
 	} else {
 		cursor.prev.next = node
 	}
+	cursor.prev = node
+	l.size++
 	return true
 }
 
@@ -93,6 +98,7 @@ func (l *LinkedList[T]) PopFront() (T, bool) {
 		return *new(T), false
 	}
 	l.head = node.next
+	l.size--
 	return node.data, true
 }
 
@@ -102,6 +108,7 @@ func (l *LinkedList[T]) PopBack() (T, bool) {
 		return *new(T), false
 	}
 	l.tail = node.prev
+	l.size--
 	return node.data, true
 }
 
@@ -120,6 +127,7 @@ func (l *LinkedList[T]) PopAt(index int) (T, bool) {
 	} else {
 		cursor.prev.next = cursor.next
 	}
+	l.size--
 	return cursor.data, true
 }
 
@@ -133,16 +141,39 @@ func (l *LinkedList[T]) Debug() {
 		}
 	}
 	fmt.Println()
+	cursor = l.tail
+	for cursor != nil {
+		fmt.Print(cursor.data)
+		cursor = cursor.prev
+		if cursor != nil {
+			fmt.Print(" ← ")
+		}
+	}
+	fmt.Println()
 }
 
 func (l *LinkedList[T]) at(index int) *linkedListNode[T] {
-	cursor := l.head
-	for cursor != nil {
-		if index == 0 {
-			return cursor
+	if index >= 0 && index < l.size {
+		if index < l.size/2 {
+			cursor := l.head
+			for cursor != nil {
+				if index == 0 {
+					return cursor
+				}
+				cursor = cursor.next
+				index--
+			}
+		} else {
+			index = l.size - 1 - index
+			cursor := l.tail
+			for cursor != nil {
+				if index == 0 {
+					return cursor
+				}
+				cursor = cursor.prev
+				index--
+			}
 		}
-		cursor = cursor.next
-		index--
 	}
 	return nil
 }
